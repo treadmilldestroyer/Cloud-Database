@@ -60,11 +60,38 @@ def delete_car():
     else:
         print("Delete cancelled.")
 
+def update_car():
+    doc_id = input("Enter the Document ID of the car you want to update: ")
+
+    updates = {}
+    
+    while True:
+        choice = input("Please select what you would like to update [year], [make], [model], [type]:").lower()
+
+        if choice in ['year', 'make', 'model', 'type']:
+            new_value = input(f"Enter the new {choice}: ")
+            updates[choice] = new_value
+        else:
+            print("Invalid selection.")
+
+        again = input("Would you like to update another item?(y/n) ")
+        if again != 'y':
+            break
+
+    if updates:
+        try:
+            db.collection("cars").document(doc_id).update(updates)
+            print(f"✅ Successfully updated {list(updates.keys())} for car {doc_id}.")
+        except Exception as e:
+            print(f"Error: Could not find a car with ID '{doc_id}'.")
+
 def main():
     while True:
         print("1. Add a car")
         print("2. Query a car")
-        print("3. Exit menu")
+        print("3. Delete a car")
+        print("4. Update a car")
+        print("5. Exit")
         
         choice = input("What would you like to do? ")
 
@@ -73,6 +100,10 @@ def main():
         elif choice == '2':
             query_car()
         elif choice == '3':
+            delete_car()
+        elif choice == '4':
+            update_car()
+        elif choice == '5':
             break
         else:
             print("Invalid selection. Please try again.")
