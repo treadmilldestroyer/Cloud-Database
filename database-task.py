@@ -28,7 +28,7 @@ def add_new_car():
     }
 
     update_time, doc_ref = db.collection("cars").add(car_description)
-    print(f"\n✅ Success! Your car was added with ID: {doc_ref.id}")
+    print(f"\n✅ Success! Your car was added with ID: {doc_ref.id} TIME: {update_time}")
 
 # this function is to search or query for a car
 def query_car():
@@ -46,7 +46,7 @@ def query_car():
         # if there is a query_term found, it will become a doc in the docs
         for doc in docs:
             car = doc.to_dict()
-            print(f"Based on your search [{field}] we found: ID {doc.id} -> {car['year']} {car['make']} {car['model']} {car['type']}")
+            print(f"Based on your search [{field}] we found: ID {doc.id} -> {car['year']} {car['make']} {car['model']} {car['type']}\n")
             results_found = True
 
     # Error Statement in the case that the car searched for is NOT in database
