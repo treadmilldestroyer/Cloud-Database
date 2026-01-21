@@ -1,5 +1,6 @@
 import firebase_admin 
 import pyrebase
+import getpass
 from firebase_admin import credentials, firestore
 
 # This is the connection to the database
@@ -14,22 +15,25 @@ config = {
     "projectId": "cse310-cloud-database",
     "storageBucket": "cse310-cloud-database.firebasestorage.app",
     "messagingSenderId": "423935572575",
-    "appId": "1:423935572575:web:2f9f6d587f2789396539ea"
+    "appId": "1:423935572575:web:2f9f6d587f2789396539ea",
+    "databaseURL": ""
 }
 
 firebase = pyrebase.initialize_app(config)
 auth = firebase.auth()
 
+# this allows users that have access to the database to login so they have access to the program
 def login():
     email = input("Email: ")
-    password = input("Password: ")
+    password = getpass.getpass("Password: ") # keeps password secret when typing them in
 
     try:
         user = auth.sign_in_with_email_and_password(email, password)
         print("\n🔓 Success! Logged in as", user['email'])
-        return user['idToken']
-    except Exception as e:
-        print(f"🔒 Login Failed. Check your email/password. \n{e}")
+        return True
+    except:
+        print(f"🔒 Login Failed. Check your email/password. \n")
+        return False
 
 # This script is for storing car information. In this script you will be able to:
 # - add a new car
@@ -71,7 +75,7 @@ def query_car():
         # if there is a query_term found, it will become a doc in the docs
         for doc in docs:
             car = doc.to_dict()
-            print(f"Based on your search [{field}] we found: ID {doc.id} -> {car['year']} {car['make']} {car['model']} {car['type']}\n")
+            print(f"Based on your search [{field}] we found: ID {doc.id} -> {car['year']} {car['make']} {car['model']} {car['type']}")
             results_found = True
 
     # Error Statement in the case that the car searched for is NOT in database
@@ -120,28 +124,32 @@ def update_car():
 
 # main() creates a menu and uses the functions above to use database
 def main():
-    if login():
-        while True:
-            print("1. Add a car")
-            print("2. Query a car")
-            print("3. Delete a car")
-            print("4. Update a car")
-            print("5. Exit")
-            
-            choice = input("What would you like to do? ")
+    while True:
+        if login():
+            break
 
-            if choice == '1':
-                add_new_car()
-            elif choice == '2':
-                query_car()
-            elif choice == '3':
-                delete_car()
-            elif choice == '4':
-                update_car()
-            elif choice == '5':
-                break
-            else:
-                print("Invalid selection. Please try again.")
+    while True:
+        print("\n----- MENU -----")
+        print("1. Add a car")
+        print("2. Query a car")
+        print("3. Delete a car")
+        print("4. Update a car")
+        print("5. Exit")
+        
+        choice = input("What would you like to do? ")
+
+        if choice == '1':
+            add_new_car()
+        elif choice == '2':
+            query_car()
+        elif choice == '3':
+            delete_car()
+        elif choice == '4':
+            update_car()
+        elif choice == '5':
+            break
+        else:
+            print("Invalid selection. Please try again.")
 
 if __name__ == "__main__":
     main()
