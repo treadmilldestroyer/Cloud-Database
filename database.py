@@ -98,8 +98,11 @@ def delete_car():
 
 # this function is used to update the contents of each car in the database
 def update_car():
-    doc_id = input("Enter the Document ID of the car you want to update: ")
+    # iMPORTANT: you need the ID of the car you want to update
+    # using the query() command first may be valuable to see the ID
+    doc_id = input("Enter the Document ID of the car you want to update: ") 
 
+    # dictionary to store the updates performed
     updates = {}
     
     while True:
@@ -111,6 +114,7 @@ def update_car():
         else:
             print("Invalid selection.")
 
+        # multiple updates can be performed in the same session
         again = input("Would you like to update another item?(y/n) ")
         if again != 'y':
             break
@@ -124,10 +128,12 @@ def update_car():
 
 # main() creates a menu and uses the functions above to use database
 def main():
+    # this first part is the user authentication
+    # users must be added in FirestoreProject/Build/Authentication/Users to be authenticated here
     while True:
         if login():
             break
-
+    # menu for user interface
     while True:
         print("\n----- MENU -----")
         print("1. Add a car")
@@ -147,7 +153,7 @@ def main():
         elif choice == '4':
             update_car()
         elif choice == '5':
-            break
+            break # the program will only end when the user enters 5 from the menu
         else:
             print("Invalid selection. Please try again.")
 
