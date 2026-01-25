@@ -84,6 +84,7 @@ def query_car():
         print(f"No cars found matching '{query_term}'.")
 
 # this function is to delete a car and its contents from database
+# before performing this function in the program, the query() might be good to know the ID of the car
 def delete_car():
     print("\n--- Delete a Car ---")
     doc_id = input("Enter the Document ID of the car you want to delete: ")
@@ -97,6 +98,7 @@ def delete_car():
         print("Delete cancelled.")
 
 # this function is used to update the contents of each car in the database
+# before performing this function in the program, the query() might be good to know the ID of the car
 def update_car():
     # iMPORTANT: you need the ID of the car you want to update
     # using the query() command first may be valuable to see the ID
